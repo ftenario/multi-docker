@@ -14,9 +14,11 @@ after_success:
   - docker build -t fenario/multi-server ./server
   - docker build -t fenario/multi-worker ./worker
 
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-
-- docker push fenario/multi-client
-- docker push fenario/multi-nginx
-- docker push fenario/multi-server
-- docker push fenario/multi-worker
+# Login to docker cli. Add DOCKER_ID/DOCKER_PASSWORD in travis-ci.org account
+# for this project
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push to docker hub  
+  - docker push fenario/multi-client
+  - docker push fenario/multi-nginx
+  - docker push fenario/multi-server
+  - docker push fenario/multi-worker
