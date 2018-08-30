@@ -22,3 +22,4 @@ after_success:
 - docker push fenario/multi-nginx
 - docker push fenario/multi-server
 - docker push fenario/multi-worker
+
