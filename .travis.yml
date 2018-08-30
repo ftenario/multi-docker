@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t fenario/react-test -f ./client/Dockerfile.dev ./client 
+
+script:
+  - docker run fenario/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t fenario/multi-client ./client
+  - docker build -t fenario/multi-nginx ./nginx
+  - docker build -t fenario/multi-server ./server
+  - docker build -t fenario/multi-worker ./worker
+
+# Login to docker cli. Add DOCKER_ID/DOCKER_PASSWORD in travis-ci.org account
+# for this project
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push to docker hub  
+- docker push fenario/multi-client
+- docker push fenario/multi-nginx
+- docker push fenario/multi-server
+- docker push fenario/multi-worker
